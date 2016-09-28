@@ -1,0 +1,19 @@
+{
+  "name": "testmalapi",
+  "version": "1.0.0",
+  "description": "Create an API to print out MAL API information",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Rommel Sunga",
+  "license": "ISC",
+  "dependencies": {
+    "concat-stream": "^1.5.2",
+    "express": "^4.14.0",
+    "https": "^1.0.0",
+    "nodemon": "^1.10.2",
+    "redis": "^2.6.2",
+    "xml2js": "^0.4.17"
+  }
+}
