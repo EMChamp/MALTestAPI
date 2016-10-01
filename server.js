@@ -7,7 +7,7 @@ var portNumber = 3000;
 var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
-var http = require('http');
+var https = require('https');
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
 var concat = require('concat-stream');
@@ -30,10 +30,9 @@ app.get('/api', function (req, res) {
 });
 
 app.post('/api/userlist', function (req, res) {
-	console.log('userlist called');
 	var userName = req.userName;
-	var url = 'http://myanimelist.net/malappinfo.php?u='+userName+'&status=all&type=anime';
-	http.get(url, function(resp) {
+	var url = 'https://myanimelist.net/malappinfo.php?u='+userName+'&status=all&type=anime';
+	https.get(url, function(resp) {
 		var malRawResponse = ''
 		resp.on('data', function(chunk) {
 			malRawResponse += chunk;
@@ -41,19 +40,9 @@ app.post('/api/userlist', function (req, res) {
 		
 		resp.on('end', function() {
 			var malParsedResponse = JSON.stringify(malRawResponse);
-			console.log(malParsedResponse);
-			res.send(malParsedResponse);
+			res.send(malRawResponse);
 		});
 		
-		/*
-		resp.pipe(concat(function(buffer) {
-			var str = buffer.toString();
-			parser.parseString(str, function(err, result) {
-				parsedResponse=result;
-				console.log(result);
-			});
-		}));
-		*/
 	});
 
 });
