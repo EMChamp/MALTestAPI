@@ -3,7 +3,7 @@ var redis = require('redis');
 var app = express();
 var router = express.Router();
 var path = __dirname + '/views/';
-var portNumber = 9001;
+var portNumber = 3000;
 var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
@@ -25,12 +25,14 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/api', function (req, res) {
+	console.log('api homepage fetched');
     res.send('MAL TEST API is running');
 });
 
-app.get('/api/userlist', function (req, res) {
-	var user = req.param.user;
-	var url = 'http://myanimelist.net/malappinfo.php?u='+user+'&status=all&type=anime';
+app.post('/api/userlist', function (req, res) {
+	console.log('userlist called');
+	var userName = req.userName;
+	var url = 'http://myanimelist.net/malappinfo.php?u='+userName+'&status=all&type=anime';
 	http.get(url, function(resp) {
 		var malRawResponse = ''
 		resp.on('data', function(chunk) {
@@ -39,7 +41,8 @@ app.get('/api/userlist', function (req, res) {
 		
 		resp.on('end', function() {
 			var malParsedResponse = JSON.stringify(malRawResponse);
-  			res.send(malParsedResponse);
+			console.log(malParsedResponse);
+			res.send(malParsedResponse);
 		});
 		
 		/*
@@ -74,7 +77,8 @@ router.get("/getMessage", function (req, res) {
 });
 
 router.get("/", function (req, res) {
-    res.sendFile(path + "index.html");
+    console.log("index.html fetched");
+	res.sendFile(path + "index.html");
 });
 
 app.use("/", router);
