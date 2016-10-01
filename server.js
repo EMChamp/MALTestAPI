@@ -7,10 +7,11 @@ var portNumber = 9001;
 var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
-var https = require('https');
+var http = require('http');
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
 var concat = require('concat-stream');
+
 // API Section
 app.listen(portNumber, function () {
     console.info('Server started at port ' + portNumber);
@@ -27,22 +28,30 @@ app.get('/api', function (req, res) {
     res.send('MAL TEST API is running');
 });
 
-app.get('/users', function (req, res) {
-	var url = 'https://myanimelist.net/malappinfo.php?u=domokun1134&status=all&type=anime';
-	https.get(url, function(resp) {
-
-    resp.on('error', function(err) {
-      console.log('Error while reading', err);
-    });
-
-    resp.pipe(concat(function(buffer) {
-      var str = buffer.toString();
-      parser.parseString(str, function(err, result) {
-        console.log('Finished parsing:', err, result);
-      });
-    }));
-  	res.send(result);
-});
+app.get('/api/userlist', function (req, res) {
+	var user = req.param.user;
+	var url = 'http://myanimelist.net/malappinfo.php?u='+user+'&status=all&type=anime';
+	http.get(url, function(resp) {
+		var malRawResponse = ''
+		resp.on('data', function(chunk) {
+			malRawResponse += chunk;
+		});
+		
+		resp.on('end', function() {
+			var malParsedResponse = JSON.stringify(malRawResponse);
+  			res.send(malParsedResponse);
+		});
+		
+		/*
+		resp.pipe(concat(function(buffer) {
+			var str = buffer.toString();
+			parser.parseString(str, function(err, result) {
+				parsedResponse=result;
+				console.log(result);
+			});
+		}));
+		*/
+	});
 
 });
 
@@ -66,7 +75,6 @@ router.get("/getMessage", function (req, res) {
 
 router.get("/", function (req, res) {
     res.sendFile(path + "index.html");
-    console.log("HELLO WORLD");
 });
 
 app.use("/", router);
