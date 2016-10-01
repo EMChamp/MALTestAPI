@@ -11,3 +11,7 @@ if $(nodemon server.js &>/dev/null &); then
 else
 	echo "nodejs server failed to start."
 fi
+
+
+#atarashii-api server
+php /home/emchamp/atarashii-api/app/console server:run
