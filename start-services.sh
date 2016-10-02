@@ -15,8 +15,9 @@ else
 	echo "nodejs server failed to start."
 fi
 
+cd ./atarashii-api
 #atarashii-api server
-if $(php ./atarashii-api/app/console server:run &>/dev/null &); then
+if $(php app/console server:run &>/dev/null &); then
 	echo "atarashii api started"
 else
 	echo "atarashii api failed to start."
