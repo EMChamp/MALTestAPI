@@ -16,7 +16,7 @@ else
 fi
 
 #atarashii-api server
-if $(php ./atarshii-api/app/console server:run &>/dev/null &); then
+if $(php ./atarashii-api/app/console server:run &>/dev/null &); then
 	echo "atarashii api started"
 else
 	echo "atarashii api failed to start."
