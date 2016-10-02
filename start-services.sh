@@ -9,7 +9,7 @@ else
 fi
 
 #start nodejs server
-if $(nodemon server.js &>/dev/null &); then
+if $(nodemon --ignore ./atarashii-api/ server.js &>/dev/null &); then
 	echo "nodejs server started on port 3000 via iptables. Go to https://localhost:3000/"
 else
 	echo "nodejs server failed to start."
