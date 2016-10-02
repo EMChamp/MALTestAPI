@@ -1,0 +1,22 @@
+_homepage:
+    path:  /
+    defaults:
+      _controller: FrameworkBundle:Template:template
+      template: 'AtarashiiAPIBundle:Default:index.html.twig'
+      maxAge: 10800
+
+_docs:
+    prefix: /docs
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_docs.yml'
+
+_api1:
+    prefix: /1
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_api1.yml'
+
+_api2:
+    prefix: /2
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_api2.yml'
+
+_api2_1:
+    prefix: /2.1
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_api2_1.yml'

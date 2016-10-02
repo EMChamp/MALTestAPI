@@ -1,0 +1,19 @@
+# All Pages under the "/docs/" prefix.
+
+_docs_index:
+    path:  /
+    defaults:
+      _controller: FrameworkBundle:Template:template
+      template: 'AtarashiiAPIBundle:Documentation:index.html.twig'
+      maxAge: 10800
+
+# Documents for API 1.0
+_docs1:
+    prefix: /1.0
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_docs_1.yml'
+
+# Documents for API 2.0
+_docs2:
+    prefix: /2.0
+    resource: '@AtarashiiAPIBundle/Resources/config/routing_docs_2.yml'
+
