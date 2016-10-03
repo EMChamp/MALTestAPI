@@ -11,6 +11,7 @@ var http = require('http');
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
 var concat = require('concat-stream');
+var exec = require("child_process").exec;
 
 // API Section
 app.listen(portNumber, function () {
@@ -30,24 +31,27 @@ app.get('/api', function (req, res) {
 });
 
 app.post('/api/userlist', function (req, res) {
-	var url = 'http://myanimelist.net/malappinfo.php?u='+req.userName+'&status=all&type=anime';
-	http.get(url, function(resp) {
-		var malRawResponse = ''
-		resp.on('data', function(chunk) {
+	var url = 'http://myanimelist.net/malappinfo.php?u=' + req.userName + '&status=all&type=anime';
+	var malRawResponse = ''
+	exec('curl -m 5 http://myanimelist.net/malappinfo.php?u=emchamp&status=all&type=anime', function (err, stdout, stderr) {
+		res.send(stdout);
+	}); 
+
+	/*
+	http.get(url, function (resp) {
+		resp.on('data', function (chunk) {
 			malRawResponse += chunk;
 		});
-		
-		resp.on('end', function() {
-			//var malParsedResponse = JSON.stringify(malRawResponse);
+
+		resp.on('end', function () {
 			console.log(malRawResponse);
 			res.send(malRawResponse);
 		});
-		
 	});
-
+	*/
 });
 // Redis Section
-redisClient.on('connect', function() {
+redisClient.on('connect', function () {
     console.log('connected');
 });
 
