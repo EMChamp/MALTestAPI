@@ -9,7 +9,6 @@ var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
 var http = require('http');
-var exec = require("child_process").exec;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -33,23 +32,17 @@ app.get('/api', function (req, res) {
 });
 
 app.post('/api/userlist', function (req, res) {
-	console.log('userName is ' + req.body.userName);
-	exec('curl -m 5 http://myanimelist.net/malappinfo.php?u='+req.body.userName+'&status=all&type=anime', function (err, stdout, stderr) {
-		res.send(stdout);
-	}); 
-
-	/*
+	var url = 'http://myanimelist.net/malappinfo.php?u='+req.body.userName+'&status=all&type=anime';
 	http.get(url, function (resp) {
+		var malRawResponse = '';
 		resp.on('data', function (chunk) {
 			malRawResponse += chunk;
 		});
 
 		resp.on('end', function () {
-			console.log(malRawResponse);
 			res.send(malRawResponse);
 		});
 	});
-	*/
 });
 
 // Redis Section
