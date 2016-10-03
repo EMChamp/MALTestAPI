@@ -52,7 +52,6 @@
 	</div>
 	<script>
 		function getUserListResults(){
-				console.log('getuserlist');
 				$.ajax({
 					type: 'POST',
 					url: '/api/userlist',
@@ -67,6 +66,7 @@
 		}
 
 		function buildTable(data) {
+			$("#userListResults tbody tr").remove();
 			rawXML = data;
 			$(rawXML).find('anime').each(function(){
                 var series_title = $(this).find('series_title').text();

@@ -1,6 +1,7 @@
 var express = require('express');
 var redis = require('redis');
 var app = express();
+var bodyParser = require('body-parser');
 var router = express.Router();
 var path = __dirname + '/views/';
 var portNumber = 3000;
@@ -8,10 +9,12 @@ var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
 var http = require('http');
-var xml2js = require('xml2js');
-var parser = new xml2js.Parser();
-var concat = require('concat-stream');
 var exec = require("child_process").exec;
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // API Section
 app.listen(portNumber, function () {
@@ -26,14 +29,12 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/api', function (req, res) {
-	console.log('api homepage fetched');
     res.send('MAL TEST API is running');
 });
 
 app.post('/api/userlist', function (req, res) {
-	var url = 'http://myanimelist.net/malappinfo.php?u=' + req.userName + '&status=all&type=anime';
-	var malRawResponse = ''
-	exec('curl -m 5 http://myanimelist.net/malappinfo.php?u=emchamp&status=all&type=anime', function (err, stdout, stderr) {
+	console.log('userName is ' + req.body.userName);
+	exec('curl -m 5 http://myanimelist.net/malappinfo.php?u='+req.body.userName+'&status=all&type=anime', function (err, stdout, stderr) {
 		res.send(stdout);
 	}); 
 
@@ -50,6 +51,7 @@ app.post('/api/userlist', function (req, res) {
 	});
 	*/
 });
+
 // Redis Section
 redisClient.on('connect', function () {
     console.log('connected');
