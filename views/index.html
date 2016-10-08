@@ -28,8 +28,8 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">API Home</a></li>
-					<li><a href="kanban.html">MAL Kanban Boards</a></li>
+					<li class="active"><a href="index.html">Get User Anime List</a></li>
+					<li><a href="kanban.html">MAL Kanban Board</a></li>
 				</ul>
 			</div>
 		</div>
@@ -40,11 +40,14 @@
 			<div class="col-md-2">
 				<form id="getUserListForm" onsubmit="getUserListResults()">
 					<p>MAL Username:</p>
-					<input type="text" id="malUserName"><br>
-					<table id="userListResults">
-						<tr>
-							<th>Series Title</th>
-						</tr>
+					<input type="text" id="malUserName" class="form-control"><br>
+					<table class="table" id="userListResults">
+						<thead>
+							<tr>
+								<th>Series Title</th>
+								<th>Score</th>
+							</tr>
+						</thead>
 					</table>
 					<button type="button" id="getListButton" class="btn btn-lg btn-primary" onclick="getUserListResults()">Submit</button>
 				</form>
