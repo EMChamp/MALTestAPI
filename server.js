@@ -2,6 +2,8 @@ var express = require('express');
 var redis = require('redis');
 var app = express();
 var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 var router = express.Router();
 var path = __dirname + '/views/';
 var portNumber = 3000;
@@ -9,11 +11,8 @@ var redisIP = '127.0.0.1';
 var redisPort = 6379;
 var redisClient = redis.createClient(redisPort, redisIP);
 var http = require('http');
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/', express.static(__dirname + '/views'));
 
-// parse application/json
-app.use(bodyParser.json())
 
 // API Section
 app.listen(portNumber, function () {
@@ -33,6 +32,12 @@ app.get('/api', function (req, res) {
 
 app.post('/api/userlist', function (req, res) {
 	var url = 'http://myanimelist.net/malappinfo.php?u='+req.body.userName+'&status=all&type=anime';
+	
+	//Specify by status parameter if it exists
+	if(req.body.status) {
+		var url = 'http://myanimelist.net/malappinfo.php?u='+req.body.userName+'&status='+req.body.status+'&type=anime';
+	}
+
 	http.get(url, function (resp) {
 		var malRawResponse = '';
 		resp.on('data', function (chunk) {
