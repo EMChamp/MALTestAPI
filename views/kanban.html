@@ -40,6 +40,9 @@
 				<form id="getUserListForm" onsubmit="getUserListResults()">
 					<p>MAL Username:</p>
 					<input type="text" id="malUserName" class="form-control"><br>
+					<button type="button" id="getListButton" class="btn btn-lg btn-primary" onclick="getUserListResults()">Submit</button>
+			</div>
+			<div class="row">
 					<div class="col-sm-4">
 					<table id="ptwTable" class="table">
 						<tr>
@@ -61,7 +64,6 @@
 						</tr>
 					</table>
 					</div>
-					<button type="button" id="getListButton" class="btn btn-lg btn-primary" onclick="getUserListResults()">Submit</button>
 				</form>
 			</div>
 	</div>
@@ -81,17 +83,20 @@
 		}
 
 		function buildTable(data) {
-			$("#userListResults tbody tr").remove();
+			$("#ptwTable tbody tr").remove();
+			$("#watchingTable tbody tr").remove();
+			$("#completedTable tbody tr").remove();
 			rawXML = data;
 			$(rawXML).find('anime').each(function(){
-              	 		var series_title = $(this).find('series_title').text();
+              	var series_title = $(this).find('series_title').text();
+				var series_image = $(this).find('series_image').text();
 				var my_status = $(this).find('my_status').text();
 				if(my_status === '6'){
-                			$('<tr></tr>').html('<td>' +series_title+ '</td><td>').appendTo('#ptwTable');
+                			$('<tr></tr>').html('<td>'+series_title+'<img class="img-responsive" height=100 width=100 src='+series_image+'></img></td><td>').appendTo('#ptwTable');
 				} else if(my_status === '1'){
-                			$('<tr></tr>').html('<td>' +series_title+ '</td><td>').appendTo('#watchingTable');
+                			$('<tr></tr>').html('<td>' +series_title+'<img class="img-responsive" height=100 width=100 src='+series_image+'></img></td><td>').appendTo('#watchingTable');
 				} else if(my_status === '2'){
-                			$('<tr></tr>').html('<td>' +series_title+ '</td><td>').appendTo('#completedTable');
+                			$('<tr></tr>').html('<td>' +series_title+'<img class="img-responsive" height=100 width=100 src='+series_image+'></img></td><td>').appendTo('#completedTable');
 				} else {
 				}
             		});
